@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kennedy Poulet frit & Pizza — Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Lilita+One&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root{
+  --roast:#2A1410;      /* fryer brown, the board background */
+  --roast-2:#3A1D16;    /* raised panels */
+  --red:#D7261E;        /* Kennedy red */
+  --red-deep:#A8170F;
+  --cream:#FFF1DC;      /* text */
+  --cream-dim:#D9C3A5;  /* secondary text */
+  --mustard:#FFC93C;    /* prices */
+  --leaf:#3E9B3C;       /* halal / veg */
+  --display:"Lilita One","Arial Black",Impact,sans-serif;
+  --text:"Barlow Condensed","Arial Narrow","Roboto Condensed",sans-serif;
+  --script:"Pacifico","Brush Script MT",cursive;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --roast:#2A1410; --cream:#FFF1DC; } }
+:root[data-theme="dark"]{ --roast:#2A1410; --cream:#FFF1DC; }
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0}
+body{background:#140906;overflow:hidden;font-family:var(--text);color:var(--cream);cursor:none}
+body.show-cursor{cursor:default}
+
+/* 1920×1080 stage, scaled to whatever screen it's on */
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;background:var(--roast);overflow:hidden}
+.screen{position:absolute;inset:0;display:grid;grid-template-rows:120px 1fr 64px;opacity:0;visibility:hidden;transition:opacity .8s ease,visibility 0s linear .8s}
+.screen.on{opacity:1;visibility:visible;transition:opacity .8s ease,visibility 0s}
+@media (prefers-reduced-motion: reduce){ .screen{transition:none} .spin{animation:none!important} }
+
+/* header */
+header{background:var(--red);display:flex;align-items:center;padding:0 44px;gap:36px;position:relative}
+header::after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:10px;background:var(--red-deep)}
+.brand{display:flex;align-items:center;gap:18px;min-width:470px}
+.brand .name{font-family:var(--script);font-size:66px;line-height:1;color:var(--cream);text-shadow:4px 4px 0 var(--red-deep);transform:rotate(-4deg) translateY(-6px)}
+.brand .sub{font-family:var(--display);font-size:25px;line-height:1.05;color:var(--mustard)}
+.halal{width:74px;height:74px;border-radius:50%;background:var(--leaf);border:4px solid var(--cream);display:grid;place-items:center;text-align:center;font-weight:700;font-size:15px;line-height:1;color:#fff}
+.halal b{display:block;font-size:24px;font-family:"Noto Naskh Arabic","Arial",sans-serif;font-weight:700;margin-bottom:2px}
+.title{flex:1;display:flex;align-items:baseline;gap:22px}
+.title h1{margin:0;font-family:var(--display);font-weight:400;font-size:76px;line-height:1;color:var(--cream);letter-spacing:.5px}
+.title span{font-size:30px;font-weight:600;font-style:italic;color:var(--cream)}
+.call{text-align:right;line-height:1}
+.call small{display:block;font-size:22px;font-weight:600;color:var(--cream);margin-bottom:4px}
+.call strong{font-family:var(--display);font-weight:400;font-size:46px;color:var(--mustard)}
+.dots{position:absolute;right:44px;bottom:8px;display:flex;gap:8px}
+.dots i{width:10px;height:10px;border-radius:50%;background:rgba(255,241,220,.35)}
+.dots i.on{background:var(--mustard)}
+
+/* footer */
+footer{background:var(--mustard);color:var(--roast);display:flex;align-items:center;justify-content:space-between;padding:0 44px;font-size:27px;font-weight:700}
+footer .big{font-family:var(--display);font-weight:400;font-size:30px}
+
+main{padding:40px 44px 26px;display:grid;gap:40px;min-height:0}
+
+/* shared pieces */
+.sec{min-width:0}
+.sec + .sec{margin-top:24px}
+.h2{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.h2 h2{margin:0;font-family:var(--display);font-weight:400;font-size:44px;line-height:1.05;color:var(--cream)}
+.h2 em{font-style:italic;font-weight:500;font-size:24px;color:var(--cream-dim)}
+.note{font-size:21px;color:var(--cream-dim);margin:0 0 10px;font-weight:500}
+.ic{display:block}
+.row{display:flex;align-items:baseline;gap:10px;padding:6px 0;font-size:29px;font-weight:600;line-height:1.15}
+.row .nm{white-space:nowrap}
+.row .en{font-style:italic;font-weight:500;color:var(--cream-dim);font-size:23px;white-space:nowrap}
+.row .lead{flex:1;border-bottom:3px dotted rgba(255,241,220,.25);transform:translateY(-6px);min-width:20px}
+.pr{font-weight:800;color:var(--mustard);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pr sup{font-size:.62em;vertical-align:.42em;margin-left:1px}
+.pr .d{font-size:.55em;vertical-align:.6em;margin-left:3px}
+.multi{display:grid;align-items:baseline;column-gap:10px}
+.multi .hd{font-size:20px;font-weight:700;color:var(--cream-dim);text-align:right;text-transform:none}
+.multi .pr{text-align:right;font-size:29px}
+.multi .nm{font-size:29px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.multi > *{padding:5px 0}
+
+/* combo tiles */
+.deal{background:var(--roast-2);border-radius:22px;padding:18px 22px;display:flex;flex-direction:column;position:relative;min-width:0}
+.deal.hot{background:var(--red)}
+.deal .lbl{font-family:var(--display);font-size:30px;line-height:1;color:var(--mustard)}
+.deal.hot .lbl{color:var(--cream)}
+.deal .what{font-size:27px;font-weight:600;line-height:1.18;margin-top:8px}
+.deal .what div{white-space:nowrap}
+.deal .what .plus{color:var(--cream-dim);font-weight:500}
+.deal .what .plus b{color:var(--cream);font-weight:600}
+.deal .bp{margin-top:auto;padding-top:8px;font-family:var(--display);font-weight:400;font-size:62px;line-height:1;color:var(--mustard)}
+.deal .bp sup{font-size:.5em;vertical-align:.75em}
+.deal .bp .d{font-size:.42em;vertical-align:1em;margin-left:4px}
+.deal .tx{font-family:var(--text);font-size:19px;color:var(--cream-dim);font-weight:600;margin-left:6px;vertical-align:.2em}
+.deal.hot .tx{color:var(--cream)}
+.deal .icons{position:absolute;right:16px;top:16px;display:flex;gap:2px}
+
+/* screen-specific layouts */
+#s-pizza main{grid-template-columns:560px 1fr}
+#s-pizza .hero{display:flex;flex-direction:column;gap:22px}
+.spin{animation:spin 90s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.promo{background:var(--red);border-radius:24px;padding:20px 26px;position:relative}
+.promo .pct{white-space:nowrap;font-family:var(--display);font-size:80px;line-height:.9;color:var(--mustard)}
+.promo .pct small{font-size:36px;color:var(--cream)}
+.promo p{margin:6px 0 0;font-size:22px;font-weight:600;color:var(--cream);line-height:1.2}
+.bread{display:flex;align-items:center;gap:18px;background:var(--roast-2);border-radius:24px;padding:14px 22px}
+.bread .t{flex:1;font-size:30px;font-weight:700;line-height:1.1}
+.bread .t em{display:block;font-size:22px;font-weight:500;color:var(--cream-dim)}
+.bread .pr{font-family:var(--display);font-weight:400;font-size:54px}
+.ptable{grid-template-columns:78px 1fr repeat(4,140px);column-gap:0}
+.ptable > *{padding:9px 0}
+.ptable .code{padding-left:12px}
+.ptable > div:nth-child(n+7):not(.code):not(.nm){padding-right:14px}
+.ptable .code{font-size:22px;font-weight:700;color:var(--cream-dim);white-space:nowrap}
+.ptable .nm small{font-size:20px;font-weight:500;color:var(--cream-dim);margin-left:12px}
+.ptable .hd{padding-right:14px;font-size:22px;line-height:1.05;color:var(--cream)}
+.ptable .hd b{display:block;font-family:var(--display);font-weight:400;font-size:34px;color:var(--mustard)}
+.ptable > .z{background:rgba(255,241,220,.045)}
+.ptable .rowbg{grid-column:1/-1}
+
+#s-poulet main{grid-template-columns:500px 720px 1fr}
+#s-combos main{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr));gap:16px;padding-top:30px}
+#s-combos .deal{padding:12px 18px;overflow:hidden}
+#s-combos .deal .lbl{font-size:28px}
+#s-combos .deal .what{font-size:25px;line-height:1.12;margin-top:4px}
+#s-combos .deal .bp{font-size:58px;padding-top:2px;position:absolute;right:18px;bottom:12px}
+#s-combos .deal .icons{top:10px;right:12px}
+#s-burgers main, #s-plus main{grid-template-columns:1fr 1fr 1fr}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.mini{display:grid;grid-template-columns:1fr 1fr;column-gap:30px}
+.callout{display:flex;align-items:center;gap:16px;background:var(--red);border-radius:20px;padding:12px 20px;margin-top:14px}
+.callout .t{flex:1;font-size:27px;font-weight:700;line-height:1.12}
+.callout .t span{display:block;font-size:22px;font-weight:500}
+.callout .pr{font-family:var(--display);font-weight:400;font-size:50px}
+.callout.dark{background:var(--roast-2)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<symbol id="i-pizza" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="97" fill="#B8662A"/>
+  <circle cx="100" cy="100" r="91" fill="#E9A64B"/>
+  <circle cx="100" cy="100" r="79" fill="#D2412A"/>
+  <circle cx="100" cy="100" r="75" fill="#FFD45E"/>
+  <g fill="#FFE695"><ellipse cx="84" cy="80" rx="14" ry="8"/><ellipse cx="124" cy="96" rx="10" ry="6"/><ellipse cx="90" cy="134" rx="12" ry="7"/><ellipse cx="140" cy="128" rx="7" ry="5"/><ellipse cx="62" cy="104" rx="8" ry="5"/></g>
+  <g stroke="#9E3B12" stroke-opacity=".25" stroke-width="2"><line x1="100" y1="9" x2="100" y2="191"/><line x1="9" y1="100" x2="191" y2="100"/><line x1="36" y1="36" x2="164" y2="164"/><line x1="164" y1="36" x2="36" y2="164"/></g>
+  <g fill="#B3261E"><circle cx="72" cy="66" r="13"/><circle cx="128" cy="62" r="13"/><circle cx="142" cy="110" r="12"/><circle cx="96" cy="104" r="13"/><circle cx="62" cy="130" r="12"/><circle cx="114" cy="146" r="13"/></g>
+  <g fill="#C9402F"><circle cx="72" cy="66" r="9"/><circle cx="128" cy="62" r="9"/><circle cx="142" cy="110" r="8"/><circle cx="96" cy="104" r="9"/><circle cx="62" cy="130" r="8"/><circle cx="114" cy="146" r="9"/></g>
+  <g fill="none" stroke="#3E9B3C" stroke-width="6" stroke-linecap="round"><path d="M84 86q10-14 24-4"/><path d="M118 86q10 8 2 20"/><path d="M80 154q-14-2-12-16"/><path d="M146 78q8 8 4 18"/><path d="M42 92q4-10 14-10"/></g>
+  <g fill="none" stroke="#2B1B14" stroke-width="3.5"><circle cx="108" cy="74" r="5"/><circle cx="74" cy="104" r="5"/><circle cx="134" cy="132" r="5"/><circle cx="92" cy="40" r="4"/></g>
+</symbol>
+<symbol id="i-chicken" viewBox="0 0 200 200">
+  <line x1="118" y1="82" x2="162" y2="38" stroke="#FFF3DF" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="156" cy="28" r="13" fill="#FFF3DF"/><circle cx="172" cy="44" r="13" fill="#FFF3DF"/>
+  <g fill="#A9531A"><ellipse cx="82" cy="120" rx="64" ry="50" transform="rotate(-42 82 120)"/></g>
+  <g fill="#D4822C"><circle cx="58" cy="140" r="22"/><circle cx="86" cy="118" r="24"/><circle cx="64" cy="104" r="18"/><circle cx="108" cy="96" r="18"/><circle cx="96" cy="146" r="18"/><circle cx="42" cy="118" r="15"/><circle cx="76" cy="164" r="14"/></g>
+  <g fill="#F0AE52"><circle cx="54" cy="132" r="7"/><circle cx="84" cy="110" r="8"/><circle cx="104" cy="90" r="6"/><circle cx="70" cy="98" r="5"/><circle cx="92" cy="140" r="6"/><circle cx="44" cy="114" r="4"/><circle cx="74" cy="156" r="5"/><circle cx="114" cy="112" r="4"/></g>
+</symbol>
+<symbol id="i-fries" viewBox="0 0 200 200">
+  <g fill="#FFC93C" stroke="#E09A14" stroke-width="2">
+    <rect x="62" y="30" width="15" height="92" rx="3" transform="rotate(-12 70 76)"/><rect x="82" y="16" width="15" height="100" rx="3" transform="rotate(-4 90 66)"/>
+    <rect x="102" y="20" width="15" height="96" rx="3" transform="rotate(5 110 68)"/><rect x="121" y="32" width="15" height="88" rx="3" transform="rotate(14 128 76)"/>
+    <rect x="92" y="38" width="15" height="80" rx="3" transform="rotate(9 100 78)"/><rect x="72" y="44" width="15" height="74" rx="3" transform="rotate(-8 80 80)"/>
+  </g>
+  <path d="M48 96 L152 96 L139 190 L61 190 Z" fill="#D7261E"/>
+  <path d="M48 96 Q100 124 152 96 L150 108 Q100 136 50 108Z" fill="#A8170F"/>
+  <path d="M55 146 L145 146 L142 164 L58 164Z" fill="#FFF1DC"/>
+</symbol>
+<symbol id="i-burger" viewBox="0 0 200 200">
+  <path d="M38 152 h124 q0 28 -28 28 h-68 q-28 0 -28 -28z" fill="#E39B45"/>
+  <rect x="30" y="124" width="140" height="30" rx="15" fill="#6B3A1E"/>
+  <path d="M34 118 h132 l-10 18 l-12-9 l-14 14 l-12-12 l-20 13 l-14-11 l-16 13 l-12-13 l-12 9z" fill="#FFC93C"/>
+  <rect x="40" y="106" width="120" height="14" rx="7" fill="#E0402A"/>
+  <path d="M30 108 q10-14 20 0 q10-14 20 0 q10-14 20 0 q10-14 20 0 q10-14 20 0 q10-14 20 0 q10-14 20 0 v6 h-140z" fill="#5DBB45"/>
+  <path d="M34 100 q0-72 66-72 q66 0 66 72z" fill="#E9A64B"/>
+  <path d="M46 92 q6-46 54-52" fill="none" stroke="#F6C77A" stroke-width="7" stroke-linecap="round"/>
+  <g fill="#FFF3D6"><ellipse cx="80" cy="56" rx="5" ry="3" transform="rotate(-20 80 56)"/><ellipse cx="104" cy="46" rx="5" ry="3"/><ellipse cx="128" cy="58" rx="5" ry="3" transform="rotate(20 128 58)"/><ellipse cx="98" cy="72" rx="5" ry="3" transform="rotate(10 98 72)"/><ellipse cx="140" cy="80" rx="5" ry="3" transform="rotate(30 140 80)"/><ellipse cx="66" cy="78" rx="5" ry="3" transform="rotate(-30 66 78)"/></g>
+</symbol>
+<symbol id="i-hotdog" viewBox="0 0 200 200">
+  <rect x="22" y="78" width="156" height="58" rx="29" fill="#D99440"/>
+  <rect x="10" y="92" width="180" height="34" rx="17" fill="#C0452C"/>
+  <path d="M26 104 l12-10 l12 10 l12-10 l12 10 l12-10 l12 10 l12-10 l12 10 l12-10 l12 10 l12-10 l12 10" fill="none" stroke="#FFD400" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M24 114 h152 q0 42 -42 42 h-68 q-42 0 -42 -42z" fill="#F0B35A"/>
+</symbol>
+<symbol id="i-drink" viewBox="0 0 200 200">
+  <rect x="104" y="6" width="11" height="52" rx="4" fill="#FFC93C" transform="rotate(12 110 32)"/>
+  <path d="M58 62 L142 62 L130 190 L70 190 Z" fill="#1F5FAE"/>
+  <path d="M62 104 Q100 92 138 104 L135 132 Q100 120 65 132Z" fill="#FFF1DC"/>
+  <path d="M65 132 Q100 120 135 132 L133 146 Q100 136 66 146Z" fill="#D7261E"/>
+  <rect x="50" y="48" width="100" height="18" rx="7" fill="#F4E4C9"/>
+</symbol>
+<symbol id="i-poutine" viewBox="0 0 200 200">
+  <g fill="#FFC93C" stroke="#E09A14" stroke-width="2"><rect x="42" y="66" width="70" height="13" rx="3" transform="rotate(-18 77 72)"/><rect x="88" y="60" width="72" height="13" rx="3" transform="rotate(14 124 66)"/><rect x="58" y="84" width="84" height="13" rx="3" transform="rotate(4 100 90)"/><rect x="66" y="48" width="60" height="13" rx="3" transform="rotate(-4 96 54)"/></g>
+  <path d="M46 84 q16-34 52-26 q34-12 54 22 q-8 12-20 6 q-6 16-18 4 q-12 12-26 0 q-14 10-22-4 q-12 8-20-2z" fill="#7A3E17"/>
+  <g fill="#FFF5DD"><rect x="66" y="62" width="16" height="13" rx="5" transform="rotate(-10 74 68)"/><rect x="98" y="56" width="16" height="13" rx="5" transform="rotate(12 106 62)"/><rect x="122" y="70" width="15" height="12" rx="5"/><rect x="84" y="78" width="15" height="12" rx="5" transform="rotate(8 92 84)"/></g>
+  <path d="M22 100 h156 q-6 76 -78 76 q-72 0 -78 -76z" fill="#D7261E"/>
+  <ellipse cx="100" cy="100" rx="78" ry="10" fill="#A8170F"/>
+  <path d="M40 130 q60 18 120 0" fill="none" stroke="#FFF1DC" stroke-width="7" stroke-linecap="round"/>
+</symbol>
+<symbol id="i-sub" viewBox="0 0 200 200">
+  <path d="M10 118 h180 q0 34 -34 34 h-112 q-34 0 -34 -34z" fill="#E39B45"/>
+  <rect x="16" y="104" width="168" height="16" rx="6" fill="#7A3E17"/>
+  <g fill="#E0402A"><path d="M30 106 a14 14 0 0 1 28 0z"/><path d="M78 106 a14 14 0 0 1 28 0z"/><path d="M126 106 a14 14 0 0 1 28 0z"/></g>
+  <path d="M14 104 q8-12 16 0 q8-12 16 0 q8-12 16 0 q8-12 16 0 q8-12 16 0 q8-12 16 0 q8-12 16 0 q8-12 16 0 q8-12 16 0 q8-12 16 0 q8-12 16 0 v6 h-176z" fill="#5DBB45"/>
+  <path d="M18 96 q0-42 46-42 h72 q46 0 46 42z" fill="#F0B35A"/>
+  <g fill="none" stroke="#D99440" stroke-width="5" stroke-linecap="round"><path d="M62 64 l10 14"/><path d="M96 60 l10 14"/><path d="M130 64 l10 14"/></g>
+</symbol>
+<symbol id="i-pita" viewBox="0 0 200 200">
+  <ellipse cx="100" cy="62" rx="46" ry="22" fill="#5DBB45"/>
+  <g fill="#8A4A22"><rect x="70" y="44" width="22" height="14" rx="5" transform="rotate(-14 81 51)"/><rect x="102" y="40" width="24" height="14" rx="5" transform="rotate(10 114 47)"/></g>
+  <g fill="#E0402A"><circle cx="92" cy="58" r="8"/><circle cx="124" cy="62" r="7"/></g>
+  <path d="M66 56 q34 18 68 0" fill="none" stroke="#FFF8EC" stroke-width="6" stroke-linecap="round"/>
+  <path d="M50 60 Q100 82 150 60 L110 186 Q100 196 90 186 Z" fill="#F2D6A2"/>
+  <path d="M68 110 L132 110 L110 186 Q100 196 90 186 Z" fill="#FFF6E6"/>
+  <g stroke="#D7261E" stroke-width="5"><line x1="72" y1="124" x2="128" y2="124"/><line x1="78" y1="142" x2="122" y2="142"/></g>
+</symbol>
+<symbol id="i-pasta" viewBox="0 0 200 200">
+  <circle cx="100" cy="104" r="92" fill="#FFF8EC"/>
+  <circle cx="100" cy="104" r="78" fill="none" stroke="#E8D7BB" stroke-width="3"/>
+  <g fill="none" stroke="#F6C964" stroke-width="6" stroke-linecap="round"><path d="M46 110 q20-50 60-30 q40 20 10 52 q-30 28-56 2"/><path d="M60 90 q30-30 70-6 q24 20 6 42"/><path d="M70 136 q30 20 66-8"/><path d="M52 124 q-6-36 28-48"/><path d="M118 68 q34 10 32 46"/></g>
+  <path d="M74 98 q14-26 38-16 q24 6 16 30 q-8 22-32 18 q-30-4-22-32z" fill="#C8331F"/>
+  <g fill="#7A2A14"><circle cx="90" cy="104" r="10"/><circle cx="114" cy="96" r="9"/></g>
+  <path d="M104 116 q14-10 22 2 q-12 8-22-2z" fill="#3E9B3C"/>
+</symbol>
+<symbol id="i-wings" viewBox="0 0 200 200">
+  <path d="M28 128 q16-64 72-56 q24 4 22 28 q-2 22-34 24 q-30 2-40 28 q-16-6-20-24z" fill="#B6421E"/>
+  <path d="M40 120 q14-40 52-40" fill="none" stroke="#E0643A" stroke-width="7" stroke-linecap="round"/>
+  <path d="M92 150 q22-58 76-42 q22 8 16 32 q-6 22-38 18 q-30-2-44 22 q-14-8-10-30z" fill="#A43A18"/>
+  <path d="M104 144 q18-30 52-28" fill="none" stroke="#E0643A" stroke-width="7" stroke-linecap="round"/>
+  <g fill="#FFF1DC"><circle cx="60" cy="102" r="2.5"/><circle cx="78" cy="112" r="2.5"/><circle cx="130" cy="130" r="2.5"/><circle cx="150" cy="122" r="2.5"/></g>
+</symbol>
+<symbol id="i-nuggets" viewBox="0 0 200 200">
+  <path d="M30 120 q-4-34 30-38 q30-4 36 22 q6 30-26 34 q-36 4-40-18z" fill="#D9892E"/>
+  <path d="M96 94 q4-34 40-30 q34 6 28 36 q-6 28-36 24 q-34-4-32-30z" fill="#C97A24"/>
+  <path d="M84 150 q2-28 34-26 q32 4 26 30 q-6 24-32 20 q-30-4-28-24z" fill="#E09A3A"/>
+  <g fill="#F4BE6A"><circle cx="54" cy="108" r="4"/><circle cx="72" cy="122" r="3"/><circle cx="124" cy="82" r="4"/><circle cx="144" cy="98" r="3"/><circle cx="106" cy="146" r="4"/><circle cx="126" cy="156" r="3"/></g>
+</symbol>
+<symbol id="i-shrimp" viewBox="0 0 200 200">
+  <path d="M150 64 a52 52 0 1 0 -6 84" fill="none" stroke="#F07A3C" stroke-width="34" stroke-linecap="round"/>
+  <g stroke="#FFD2A8" stroke-width="4"><line x1="70" y1="62" x2="80" y2="84"/><line x1="50" y1="96" x2="74" y2="100"/><line x1="56" y1="132" x2="78" y2="118"/><line x1="90" y1="154" x2="98" y2="132"/></g>
+  <path d="M144 148 l34 10 l-14 -30z" fill="#D7261E"/>
+</symbol>
+<symbol id="i-salad" viewBox="0 0 200 200">
+  <g fill="#5DBB45"><circle cx="70" cy="92" r="26"/><circle cx="104" cy="80" r="28"/><circle cx="136" cy="94" r="24"/></g>
+  <g fill="#3E9B3C"><circle cx="88" cy="98" r="18"/><circle cx="122" cy="102" r="16"/></g>
+  <g fill="#E0402A"><circle cx="78" cy="78" r="10"/><circle cx="130" cy="82" r="9"/></g>
+  <g fill="#E8F2C8" stroke="#3E9B3C" stroke-width="3"><circle cx="104" cy="96" r="9"/></g>
+  <path d="M22 104 h156 q-6 74 -78 74 q-72 0 -78 -74z" fill="#FFF1DC"/>
+  <path d="M40 132 q60 16 120 0" fill="none" stroke="#D7261E" stroke-width="7" stroke-linecap="round"/>
+</symbol>
+<symbol id="i-calzone" viewBox="0 0 200 200">
+  <path d="M16 150 A84 84 0 0 1 184 150 Z" fill="#E9A64B"/>
+  <path d="M16 150 h168" stroke="#C9772F" stroke-width="12" stroke-linecap="round"/>
+  <g fill="#C9772F"><circle cx="30" cy="150" r="7"/><circle cx="54" cy="150" r="7"/><circle cx="78" cy="150" r="7"/><circle cx="102" cy="150" r="7"/><circle cx="126" cy="150" r="7"/><circle cx="150" cy="150" r="7"/><circle cx="172" cy="150" r="7"/></g>
+  <g stroke="#B8662A" stroke-width="5" stroke-linecap="round"><line x1="76" y1="96" x2="86" y2="112"/><line x1="100" y1="86" x2="100" y2="104"/><line x1="124" y1="96" x2="114" y2="112"/></g>
+  <path d="M44 128 q20-50 72-60" fill="none" stroke="#F6C77A" stroke-width="7" stroke-linecap="round"/>
+</symbol>
+<symbol id="i-rice" viewBox="0 0 200 200">
+  <path d="M34 108 q66-80 132 0z" fill="#F2B13F"/>
+  <g fill="#FFF3D6"><circle cx="70" cy="94" r="3"/><circle cx="92" cy="80" r="3"/><circle cx="116" cy="84" r="3"/><circle cx="136" cy="98" r="3"/><circle cx="100" cy="98" r="3"/><circle cx="82" cy="100" r="3"/></g>
+  <g fill="#D9682A"><circle cx="78" cy="86" r="3"/><circle cx="124" cy="94" r="3"/><circle cx="106" cy="72" r="3"/></g>
+  <path d="M96 64 q22-18 30 4 q-16 12-30-4z" fill="#A9531A"/>
+  <path d="M120 72 q10-14 22-8" fill="none" stroke="#3E9B3C" stroke-width="6" stroke-linecap="round"/>
+  <path d="M20 106 h160 q-6 72 -80 72 q-74 0 -80 -72z" fill="#D7261E"/>
+  <ellipse cx="100" cy="106" rx="80" ry="9" fill="#A8170F"/>
+</symbol>
+<symbol id="i-fish" viewBox="0 0 200 200">
+  <ellipse cx="96" cy="104" rx="76" ry="40" fill="#C9752A" transform="rotate(-10 96 104)"/>
+  <g fill="#E39B45"><circle cx="64" cy="100" r="16"/><circle cx="96" cy="92" r="18"/><circle cx="128" cy="96" r="14"/><circle cx="84" cy="118" r="14"/><circle cx="116" cy="116" r="14"/></g>
+  <path d="M150 86 l34 18 l-40 14z" fill="#FFC93C"/>
+  <circle cx="164" cy="104" r="6" fill="#FFF1DC"/>
+</symbol>
+<symbol id="i-rings" viewBox="0 0 200 200">
+  <g fill="none" stroke="#D9892E" stroke-width="18"><ellipse cx="74" cy="92" rx="44" ry="38"/><ellipse cx="132" cy="120" rx="44" ry="38"/></g>
+  <g fill="none" stroke="#F4BE6A" stroke-width="4" stroke-dasharray="3 10"><ellipse cx="74" cy="92" rx="44" ry="38"/><ellipse cx="132" cy="120" rx="44" ry="38"/></g>
+</symbol>
+<symbol id="i-bread" viewBox="0 0 200 200">
+  <g fill="#E9A64B" stroke="#C9772F" stroke-width="3"><rect x="26" y="70" width="44" height="64" rx="8" transform="rotate(-8 48 102)"/><rect x="78" y="62" width="44" height="66" rx="8"/><rect x="130" y="70" width="44" height="64" rx="8" transform="rotate(8 152 102)"/></g>
+  <g fill="#FFD45E"><rect x="30" y="72" width="36" height="22" rx="8" transform="rotate(-8 48 83)"/><rect x="82" y="64" width="36" height="22" rx="8"/><rect x="134" y="72" width="36" height="22" rx="8" transform="rotate(8 152 83)"/></g>
+  <g fill="#3E9B3C"><circle cx="48" cy="84" r="2.5"/><circle cx="96" cy="74" r="2.5"/><circle cx="108" cy="80" r="2.5"/><circle cx="150" cy="84" r="2.5"/></g>
+</symbol>
+</defs>
+</svg>
+
+<div id="stage"></div>
+
+<script>
+/* ===== MENU DATA — edit prices here =====
+   Prix tirés du dépliant d'avril 2025. Change a number, save, refresh the TV. */
+const MENU = {
+  pizzas: [
+    ["P-1","Fromage","Cheese","Mozzarella",[12.95,14.95,17.95,20.95]],
+    ["P-2","Pepperoni","","Pepperoni, mozzarella",[14.95,16.95,20.95,24.95]],
+    ["P-3","Hawaïenne","Hawaiian","Ananas, poulet",[16.95,18.95,23.95,26.95]],
+    ["P-4","Toute garnie","All dressed","Pepperoni, champignons, piments verts",[17.95,19.95,24.95,27.95]],
+    ["P-5","Québécoise","","Pepperoni, bacon, champignons",[17.95,19.95,24.95,27.95]],
+    ["P-6","Mexicaine","Mexican","Bœuf, oignons, tomates, olives, piments forts",[19.95,22.95,26.95,29.95]],
+    ["P-7","Grecque","Greek","Oignons, tomates, olives noires, feta",[19.95,21.95,26.95,29.95]],
+    ["P-8","Kennedy","","Poulet, champignons, tomates, piments forts",[19.95,21.95,26.95,29.95]],
+    ["P-9","Amoureux de la viande","Meat lovers","Pepperoni, poulet, bœuf",[19.95,21.95,26.95,29.95]],
+    ["P-10","Végétarienne","","Légumes, olives, piments forts",[21.95,23.95,27.95,30.95]],
+    ["P-11","Poulet","Chicken","Sauce tomate, poulet",[15.95,18.95,21.95,24.95]],
+    ["P-12","Suprême","Supreme","Bœuf, poulet, légumes, piments piquants",[24.95,26.95,33.95,36.95]],
+    ["P-13","Pizza PAK","PAK pizza","Poulet, légumes, piments piquants",[21.95,23.95,28.95,30.95]],
+    ["P-14","Pizza blanche","White pizza","Beurre à l'ail, extra mozzarella",[14.95,16.95,20.95,24.95]],
+  ],
+  cheesyBread: 8.95,
+  pieces: [[2,6.95],[4,12.95],[6,18.95],[8,23.95],[10,29.95],[12,34.95],[16,42.95],[18,46.95],[20,49.95]],
+  chickenCombos: [
+    ["Combo-poulet 1",["10 morceaux"],["frites","2 Pepsi 355 ml"],31.95],
+    ["Combo-poulet 2",["12 morceaux"],["frites","2 Pepsi 355 ml"],37.95],
+    ["Combo-poulet 3",["16 morceaux"],["frites","4 Pepsi 355 ml"],49.95],
+    ["Combo-poulet 4",["20 morceaux"],["frites familiale","4 Pepsi 355 ml"],59.95],
+  ],
+  chickenSpecials: [
+    ["Spécial 5","4 morceaux","p. frites, 1 Pepsi",16.95],
+    ["Spécial 6","6 morceaux","p. frites, 2 Pepsi",22.95],
+    ["Spécial 7","10 morceaux","p. frites, 3 Pepsi",32.95],
+  ],
+  wings:[["10 ailes",14.95],["12 ailes",16.95],["15 ailes",18.95],["20 ailes",22.95]],
+  nuggets:[["10 mcx",14.95],["12 mcx",16.95],["15 mcx",19.95],["20 mcx",24.95]],
+  fingers:[["3 mcx",14.95],["4 mcx",17.95],["5 mcx",20.95]],
+  trioWings: 15.95,
+  superCombos: [
+    ["Combo 1",["2 pizzas 10 po"],["2 Pepsi 355 ml"],27.95,["pizza","pizza","drink"]],
+    ["Combo 2",["2 pizzas 12 po"],["2 Pepsi 355 ml"],31.95,["pizza","pizza","drink"]],
+    ["Combo 3",["2 pizzas 14 po"],["2 Pepsi 710 ml"],40.95,["pizza","pizza","drink"]],
+    ["Combo 4",["2 pizzas 16 po"],["2 Pepsi 710 ml"],47.95,["pizza","pizza","drink"]],
+    ["Combo 5",["1 pizza 10 po"],["p. poutine","2 Pepsi 710 ml"],27.95,["pizza","poutine","drink"]],
+    ["Combo 6",["1 pizza 12 po"],["gr. poutine","2 Pepsi 710 ml"],31.95,["pizza","poutine","drink"]],
+    ["Combo 7",["1 pizza 14 po"],["gr. poutine","2 Pepsi 710 ml"],39.95,["pizza","poutine","drink"]],
+    ["Combo 8",["1 pizza 16 po"],["gr. poutine","2 Pepsi 710 ml"],45.95,["pizza","poutine","drink"]],
+    ["Combo 9",["1 pizza 10 po"],["10 ailes ou 3 mcx poulet","2 Pepsi 355 ml"],28.95,["pizza","wings","drink"]],
+    ["Combo 10",["1 pizza 12 po"],["10 ailes ou 4 mcx poulet","2 Pepsi 355 ml"],32.95,["pizza","wings","drink"]],
+    ["Combo 11",["1 pizza 14 po"],["15 ailes ou 5 mcx poulet","2 Pepsi 710 ml"],40.95,["pizza","wings","drink"]],
+    ["Combo 12",["1 pizza 16 po"],["20 ailes ou 6 mcx poulet","2 Pepsi 710 ml"],47.95,["pizza","wings","drink"]],
+    ["Spécial 1",["1 pizza 10 po"],["p. frites","1 Pepsi 355 ml"],20.95,["pizza","fries","drink"],true],
+    ["Spécial 2",["1 pizza 12 po"],["p. frites","1 Pepsi 355 ml"],23.95,["pizza","fries","drink"],true],
+    ["Spécial 3",["1 pizza 14 po"],["p. frites","2 Pepsi 355 ml"],28.95,["pizza","fries","drink"],true],
+    ["Spécial 4",["1 pizza 16 po"],["p. frites","3 Pepsi 355 ml"],31.95,["pizza","fries","drink"],true],
+  ],
+  burgers:[["Burger","Bœuf / beef",6.50],["Cheeseburger","Bœuf / beef",6.95],["Cheeseburger double","Bœuf / beef",10.95],["Burger au poulet pané","Breaded chicken",6.95],["Club sandwich","Frites, salade de chou",14.95]],
+  trioBurger: 11.95, comboBurger: 22.95,
+  subs:[["S-1","Steak",13.95],["S-2","Steak + pepperoni",14.95],["S-3","Pepper steak",14.95],["S-4","Mushroom steak",14.95],["S-5","Végétarien",14.95],["S-6","Italien",14.95]],
+  comboSub: 18.95, comboClub: 16.95,
+  greek:[["Pita gyro au bœuf","Gyro beef pita",8.95],["Pita poulet","Chicken pita",8.95],["Pita gyro bœuf + frites + Pepsi","",12.95],["Pita poulet + frites + Pepsi","",12.95]],
+  comboPita: 24.95,
+  hotdogs:[["2 hot-dogs","p. frites, 1 Pepsi",9.95],["4 hot-dogs","2 p. frites, 2 Pepsi",20.95],["8 hot-dogs","frites familiale, 4 Pepsi",39.95]],
+  biryani:[["1 biryani au poulet","1 Pepsi 355 ml",11.95],["2 biryani au poulet","2 Pepsi 355 ml",21.95]],
+  poutines:[["Traditionnelle","",8.95,11.95],["Italienne","Sauce à la viande",11.95,13.95],["Au poulet","Chicken",11.95,13.95],["Végétarienne","Vegetarian",11.95,13.95]],
+  pasta:[["Spaghetti","",12.95],["Lasagne","",12.95],["Macaroni","",12.95],["Macaroni au fromage","Mac and cheese",8.95]],
+  comboPasta: 24.95,
+  salads:[["Régulière","Regular",12.95],["César","Caesar",12.95],["Grecque","Greek",15.95]],
+  saladChicken: 3.00,
+  calzones:[["Nature","Plain",16.95],["Toute garnie","All dressed",21.95],["Végétarienne","Vegetarian",23.95],["À la viande","Meat",23.95]],
+  fish:[["1 morceau",9.95],["2 morceaux",17.95],["3 morceaux",23.95]],
+  shrimp:[["Crevettes jumbo, 8 mcx",17.95],["Crevettes jumbo, 10 mcx",21.95],["Panier de crevettes, 21 mcx",13.95]],
+  sides:[["Hot-dog","",[2.95]],["Frites","p. · m. · fam.",[3.95,4.95,9.95]],["Rondelles d'oignon","p. · gr. · fam.",[4.95,6.95,11.95]],["Boisson gazeuse","355 ml · 710 ml · 1 L",[2.00,2.50,3.00]]],
+};
+
+/* ===== rendering ===== */
+const ic=(n,s=60)=>`<svg class="ic" width="${s}" height="${s}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const split=v=>{const [a,b]=v.toFixed(2).split('.');return [a,b]};
+const pr=v=>{const[a,b]=split(v);return `<span class="pr">${a}<sup>,${b}</sup></span>`};
+const big=v=>{const[a,b]=split(v);return `${a}<sup>,${b}</sup><span class="d">$</span>`};
+const row=(nm,en,v)=>`<div class="row"><span class="nm">${nm}</span>${en?`<span class="en">${en}</span>`:''}<span class="lead"></span>${pr(v)}</div>`;
+const h2=(t,en,icon,s=64)=>`<div class="h2">${icon?ic(icon,s):''}<h2>${t}</h2>${en?`<em>${en}</em>`:''}</div>`;
+const what=(main,plus)=>`<div class="what">${main.map(m=>`<div>${m}</div>`).join('')}${plus.map(p=>`<div class="plus">+ <b>${p}</b></div>`).join('')}</div>`;
+const callout=(t,sub,v,icon,dark)=>`<div class="callout${dark?' dark':''}">${icon?ic(icon,70):''}<div class="t">${t}${sub?`<span>${sub}</span>`:''}</div><span class="pr">${big(v)}</span></div>`;
+
+const plate=(...l)=>`<div style="display:flex;justify-content:center;align-items:flex-end;margin-top:30px">${l.map(([n,z])=>ic(n,z)).join('')}</div>`;
+const header=(title,sub)=>`<header>
+  <div class="brand"><div class="halal"><div><b>حلال</b>Halal</div></div><div><div class="name">Kennedy</div></div><div class="sub">Poulet frit<br>& Pizza</div></div>
+  <div class="title"><h1>${title}</h1>${sub?`<span>${sub}</span>`:''}</div>
+  <div class="call"><small>Livraison gratuite</small><strong>514-903-4500</strong></div>
+  <div class="dots"></div>
+</header>`;
+const footer=`<footer><span class="big">Livraison rapide et gratuite dès 20 $</span><span>Tous les jours, 11 h à 22 h</span><span>5904, boul. Gouin Ouest</span><span>Taxes en sus</span></footer>`;
+
+const screens=[
+ {id:'s-pizza',title:'Pizzas',sub:'Fraîches et délicieuses',body:()=>{
+   const M=MENU.pizzas;
+   let t=`<div class="multi ptable"><div class="hd"></div><div class="hd"></div>${[['10 po','Petite'],['12 po','Moyenne'],['14 po','Large'],['16 po','Ex-large']].map(([a,b])=>`<div class="hd"><b>${a}</b>${b}</div>`).join('')}`;
+   M.forEach((p,i)=>{const z=i%2?' z':'';t+=`<div class="code${z}">${p[0]}</div><div class="nm${z}">${p[1]}<small>${p[3]}</small></div>${p[4].map(v=>`<div class="${z.trim()}" style="text-align:right">${pr(v)}</div>`).join('')}`});
+   t+='</div>';
+   return `<div class="hero">
+     <svg class="ic spin" width="390" height="390" style="align-self:center" aria-hidden="true"><use href="#i-pizza"/></svg>
+     <div class="promo"><div class="pct">−10 % <small>au comptoir</small></div><p>Sur les pizzas à la carte, prix régulier, pour emporter seulement.</p></div>
+     <div class="bread">${ic('bread',90)}<div class="t">Pain au fromage<em>Beurre à l'ail · Cheesy bread</em></div><span class="pr">${big(MENU.cheesyBread)}</span></div>
+   </div>
+   <div><p class="note" style="margin-bottom:4px">Fromage mozzarella sur toutes les pizzas.</p>${t}</div>`;
+ }},
+ {id:'s-poulet',title:'Poulet frit',sub:'Fried chicken',body:()=>`
+   <div>
+     ${h2('Morceaux de poulet','Pieces',null)}
+     <div style="margin-top:8px">${MENU.pieces.map(([n,v])=>row(n+' morceaux','',v)).join('')}</div>
+     <div style="display:flex;justify-content:center;align-items:flex-end;gap:0;margin-top:26px">${ic('chicken',190)}${ic('fries',150)}${ic('drink',120)}</div>
+   </div>
+   <div>
+     ${h2('Combos poulet','',null)}
+     <p class="note">Avec frites et Pepsi.</p>
+     <div class="grid2">${MENU.chickenCombos.map((c,i)=>`<div class="deal${i===3?' hot':''}" style="min-height:236px"><div class="icons">${ic('chicken',70)}</div><div class="lbl">${c[0]}</div>${what(c[1],c[2])}<div class="bp">${big(c[3])}<span class="tx">+tx</span></div></div>`).join('')}</div>
+     <div class="sec" style="margin-top:26px">${h2('Spéciaux poulet','',null)}
+       ${MENU.chickenSpecials.map(s=>`<div class="row"><span class="nm" style="color:var(--mustard);font-family:var(--display);font-weight:400">${s[0]}</span><span class="nm">${s[1]}</span><span class="en">+ ${s[2]}</span><span class="lead"></span>${pr(s[3])}</div>`).join('')}
+     </div>
+   </div>
+   <div>
+     <div class="sec">${h2('Ailes','Wings','wings',70)}<p class="note">Servies avec frites et sauce.</p><div class="mini">${MENU.wings.map(([a,v])=>row(a,'',v)).join('')}</div></div>
+     <div class="sec">${h2('Croquettes','Nuggets','nuggets',70)}<p class="note">Servies avec frites et sauce.</p><div class="mini">${MENU.nuggets.map(([a,v])=>row(a,'',v)).join('')}</div></div>
+     <div class="sec">${h2('Doigts de poulet','Fingers',null)}<p class="note">Servis avec frites.</p><div class="mini">${MENU.fingers.map(([a,v])=>row(a,'',v)).join('')}</div></div>
+     ${callout('Trio-ailes','10 ailes, frites, 1 Pepsi',MENU.trioWings,'wings')}
+   </div>`},
+ {id:'s-combos',title:'Super combos',sub:'Max. 3 garnitures par pizza',body:()=>MENU.superCombos.map(c=>`
+   <div class="deal${c[5]?' hot':''}"><div class="icons">${c[4].map(n=>ic(n,46)).join('')}</div><div class="lbl">${c[0]}</div>${what(c[1],c[2])}<div class="bp">${big(c[3])}<span class="tx">+tx</span></div></div>`).join('')},
+ {id:'s-burgers',title:'Burgers & sous-marins',sub:'',body:()=>`
+   <div>
+     <div class="sec">${h2('Burgers & sandwichs','',"burger",80)}${MENU.burgers.map(b=>row(b[0],b[1],b[2])).join('')}</div>
+     ${callout('Trio-burger','Bœuf ou poulet pané, frites, 1 Pepsi',MENU.trioBurger,'burger')}
+     ${callout('Combo-burger','2 burgers, 2 frites, 2 Pepsi',MENU.comboBurger,null,true)}
+     ${plate(['burger',200],['fries',150],['drink',120])}
+   </div>
+   <div>
+     <div class="sec">${h2('Sous-marins 10 po','',"sub",80)}<p class="note">Laitue, tomate, mayo, vinaigrette italienne, mozzarella.</p>${MENU.subs.map(s=>row(s[1],'',s[2])).join('')}</div>
+     ${callout('Combo sous-marin','Sous-marin au choix, frites, 1 Pepsi',MENU.comboSub,'sub')}
+     ${callout('Combo club','Club sandwich avec frites, 1 Pepsi',MENU.comboClub,null,true)}
+     ${plate(['sub',190],['drink',100])}
+   </div>
+   <div>
+     <div class="sec">${h2('Spécialités grecques','',"pita",70)}${MENU.greek.map(g=>row(g[0],g[1],g[2])).join('')}
+       ${callout('Combo pita','2 gyros ou 2 souvlakis poulet, 2 p. frites, 2 Pepsi',MENU.comboPita,null,true)}</div>
+     <div class="sec">${h2('Combos hot-dogs','',"hotdog",64)}${MENU.hotdogs.map(h=>row(h[0],'+ '+h[1],h[2])).join('')}</div>
+     <div class="sec">${h2('Riz biryani','',"rice",64)}${MENU.biryani.map(h=>row(h[0],'+ '+h[1],h[2])).join('')}</div>
+   </div>`},
+ {id:'s-plus',title:'Poutines, pâtes & plus',sub:'',body:()=>`
+   <div>
+     <div class="sec">${h2('Poutines','Fromage en grains',"poutine",80)}
+       <div class="multi" style="grid-template-columns:1fr 110px 110px"><div></div><div class="hd">Petite</div><div class="hd">Grande</div>
+       ${MENU.poutines.map(p=>`<div class="nm">${p[0]}${p[1]?` <span style="font-size:22px;font-style:italic;font-weight:500;color:var(--cream-dim)">${p[1]}</span>`:''}</div><div style="text-align:right">${pr(p[2])}</div><div style="text-align:right">${pr(p[3])}</div>`).join('')}</div></div>
+     <div class="sec">${h2('Casse-croûte','Sides',"fries",70)}
+       ${MENU.sides.map(s=>`<div class="row"><span class="nm">${s[0]}</span>${s[1]?`<span class="en">${s[1]}</span>`:''}<span class="lead"></span>${s[2].map(pr).join('<span style="color:var(--cream-dim)">/</span>')}</div>`).join('')}</div>
+     ${plate(['poutine',170],['rings',130],['drink',110])}
+   </div>
+   <div>
+     <div class="sec">${h2('Pâtes gratinées','',"pasta",80)}<p class="note">Sauce à la viande et mozzarella. Grand format.</p>${MENU.pasta.map(p=>row(p[0],p[1],p[2])).join('')}
+       ${callout('Combo pâtes','2 spaghettis ou 2 lasagnes, 2 Pepsi',MENU.comboPasta,null,true)}</div>
+     <div class="sec">${h2('Salades','Grand format',"salad",70)}${MENU.salads.map(p=>row(p[0],p[1],p[2])).join('')}
+       <div class="row"><span class="nm" style="color:var(--cream-dim)">Ajouter poulet grillé</span><span class="lead"></span><span class="pr">+${split(MENU.saladChicken)[0]}<sup>,${split(MENU.saladChicken)[1]}</sup></span></div></div>
+   </div>
+   <div>
+     <div class="sec">${h2('Calzones','',"calzone",80)}${MENU.calzones.map(p=>row(p[0],p[1],p[2])).join('')}</div>
+     <div class="sec">${h2('Fruits de mer','',"shrimp",70)}<p class="note">Avec frites et sauce tartare.</p>
+       ${MENU.fish.map(f=>row('Poisson',f[0],f[1])).join('')}${MENU.shrimp.map(f=>row(f[0],'',f[1])).join('')}</div>
+     ${plate(['fish',130],['shrimp',110])}
+   </div>`},
+];
+
+const stage=document.getElementById('stage');
+stage.innerHTML=screens.map(s=>`<section class="screen" id="${s.id}">${header(s.title,s.sub)}<main>${s.body()}</main>${footer}</section>`).join('');
+const els=[...stage.querySelectorAll('.screen')];
+
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+
+/* which screen?  …/#1 to …/#5 pins one board per TV; no number = rotate through all */
+let cur=0,timer=null;const pinned=()=>{const n=parseInt((location.hash||'').replace(/\D/g,''),10);return n>=1&&n<=els.length?n-1:null};
+function show(i){cur=(i+els.length)%els.length;els.forEach((e,k)=>e.classList.toggle('on',k===cur));
+  const rotating=pinned()===null;
+  stage.querySelectorAll('.dots').forEach(d=>d.innerHTML=rotating?els.map((_,k)=>`<i class="${k===cur?'on':''}"></i>`).join(''):'');}
+function start(){clearInterval(timer);const p=pinned();if(p!==null){show(p);return}show(cur);timer=setInterval(()=>show(cur+1),15000)}
+addEventListener('hashchange',start);start();
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'){show(cur+1);start()} if(e.key==='ArrowLeft'){show(cur-1);start()}
+  if(/^[1-9]$/.test(e.key)&&+e.key<=els.length){location.hash=e.key}
+  if(e.key==='0'){history.replaceState(null,'',location.pathname);start()}
+  if(e.key==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.()}
+});
+let mt;addEventListener('mousemove',()=>{document.body.classList.add('show-cursor');clearTimeout(mt);mt=setTimeout(()=>document.body.classList.remove('show-cursor'),2500)});
+</script>
+</body>
+</html>
